@@ -10,11 +10,11 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 
-public class Jogo extends JPanel implements KeyListener{
-    
+public class Jogo extends JPanel implements KeyListener {
+
     Pacman pac = new Pacman(this);
-    
-    public void move(){
+
+    public void move() {
         pac.move();
     }
 
@@ -32,6 +32,8 @@ public class Jogo extends JPanel implements KeyListener{
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setColor(Color.black);
+        g2d.fillRect(0, 0, this.getWidth(), this.getWidth());
         pac.paint(g2d);
 //        g2d.setColor(Color.RED);
 //        g2d.fillOval(0, 0, 30, 30);
@@ -40,15 +42,15 @@ public class Jogo extends JPanel implements KeyListener{
 //        g2d.drawRect(50, 50, 30, 30);
 //        g2d.draw(new Ellipse2D.Double(0, 100, 30, 30));
     }
-    
-    public void run(){
-        while(true){
+
+    public void run() {
+        while (true) {
             this.move();
             this.repaint();
-            try{
+            try {
                 Thread.sleep(10);
-            } catch (InterruptedException ex){
-                
+            } catch (InterruptedException ex) {
+
             }
         }
     }
@@ -59,7 +61,7 @@ public class Jogo extends JPanel implements KeyListener{
 
     @Override
     public void keyPressed(KeyEvent k) {
-        switch (k.getKeyCode()){
+        switch (k.getKeyCode()) {
             //UP
             case 38:
                 pac.dir = 'u';

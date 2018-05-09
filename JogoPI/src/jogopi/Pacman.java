@@ -1,11 +1,12 @@
 package jogopi;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class Pacman {
 
-    int x = 1;
-    int y = 1;
+    int x = 0;
+    int y = 0;
     int xa = 1;
     int ya = 1;
     char dir = 'd';
@@ -16,6 +17,7 @@ public class Pacman {
     }
 
     public void paint(Graphics2D g) {
+        g.setColor(Color.yellow);
         g.fillOval(x, y, 40, 40);
     }
 
