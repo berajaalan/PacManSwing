@@ -13,6 +13,8 @@ import javax.swing.JFrame;
 public class Jogo extends JPanel implements KeyListener {
 
     Pacman pac = new Pacman(this);
+    private String gameState = "game";
+    Timer timer = new Timer(1000, );
 
     public void move() {
         pac.move();
@@ -25,6 +27,9 @@ public class Jogo extends JPanel implements KeyListener {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.addKeyListener(this);
+        this.setBackground(Color.black);
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
     }
 
     @Override
@@ -32,9 +37,11 @@ public class Jogo extends JPanel implements KeyListener {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setColor(Color.black);
-        g2d.fillRect(0, 0, this.getWidth(), this.getWidth());
         pac.paint(g2d);
+        if (gameState == "pause") {
+            g2d.setColor(Color.WHITE);
+            g2d.fillRect(this.getWidth() - 15, 5, 10, 30);
+        }
 //        g2d.setColor(Color.RED);
 //        g2d.fillOval(0, 0, 30, 30);
 //        g2d.drawOval(0, 50, 30, 30);
@@ -45,12 +52,23 @@ public class Jogo extends JPanel implements KeyListener {
 
     public void run() {
         while (true) {
-            this.move();
-            this.repaint();
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException ex) {
-
+            switch(gameState){
+                case "game":
+                    this.move();
+                    this.repaint();
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException ex) {
+                    }
+                    break;
+                case "pause":
+                    this.repaint();
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException ex) {
+                    }
+                    break;
+                
             }
         }
     }
@@ -77,6 +95,13 @@ public class Jogo extends JPanel implements KeyListener {
             //RIGHT
             case 39:
                 pac.dir = 'r';
+                break;
+            //P (Pausar)
+            case 112:
+                if (gameState == "game")
+                    this.gameState = "pause";
+                else if (gameState == "pause")
+                    this.gameState = "game";
                 break;
         }
     }
