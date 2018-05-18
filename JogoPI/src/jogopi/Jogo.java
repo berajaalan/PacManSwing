@@ -1,6 +1,7 @@
 package jogopi;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -13,8 +14,10 @@ import javax.swing.JFrame;
 public class Jogo extends JPanel implements KeyListener {
 
     Pacman pac = new Pacman(this);
-    private String gameState = "game";
-    Timer timer = new Timer(1000, );
+    String gameState = "menu", menuSelect = "play";
+    Play play = new Play(this);
+    ScoreBoard sb = new ScoreBoard(this);
+    Exit exit = new Exit(this);
 
     public void move() {
         pac.move();
@@ -37,22 +40,53 @@ public class Jogo extends JPanel implements KeyListener {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        pac.paint(g2d);
-        if (gameState == "pause") {
-            g2d.setColor(Color.WHITE);
-            g2d.fillRect(this.getWidth() - 15, 5, 10, 30);
+        switch (gameState) {
+            case "menu":
+                play.paint(g2d);
+                sb.paint(g2d);
+                exit.paint(g2d);
+                Font fnt = new Font("arial", 1, 90);
+                g.setFont(fnt);
+                g.setColor(Color.ORANGE);
+                g.drawString("PACMAN", 200, 150);
+                switch (menuSelect) {
+                    case "play":
+                        g2d.setColor(Color.white);
+                        g2d.fillArc(250, 275, 30, 30, 135, 90);
+                        break;
+                    case "sb":
+                        g2d.setColor(Color.white);
+                        g2d.fillArc(250, 365, 30, 30, 135, 90);
+                        break;
+                    case "exit":
+                        g2d.setColor(Color.white);
+                        g2d.fillArc(250, 455, 30, 30, 135, 90);
+                        break;
+                }
+                break;
+            case "game":
+                pac.paint(g2d);
+                break;
+            case "pause":
+                pac.paint(g2d);
+                g2d.setColor(Color.WHITE);
+                g2d.fillRect(this.getWidth() - 15, 5, 10, 30);
+                g2d.fillRect(this.getWidth() - 30, 5, 10, 30);
+                break;
         }
-//        g2d.setColor(Color.RED);
-//        g2d.fillOval(0, 0, 30, 30);
-//        g2d.drawOval(0, 50, 30, 30);
-//        g2d.fillRect(50, 0, 30, 30);
-//        g2d.drawRect(50, 50, 30, 30);
-//        g2d.draw(new Ellipse2D.Double(0, 100, 30, 30));
     }
 
     public void run() {
+
         while (true) {
-            switch(gameState){
+            switch (gameState) {
+                case "menu":
+                    this.repaint();
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException ex) {
+                    }
+                    break;
                 case "game":
                     this.move();
                     this.repaint();
@@ -68,13 +102,23 @@ public class Jogo extends JPanel implements KeyListener {
                     } catch (InterruptedException ex) {
                     }
                     break;
-                
+
             }
         }
     }
 
     @Override
     public void keyTyped(KeyEvent k) {
+        switch (k.getKeyChar()) {
+            // P
+            case 'p':
+                if (gameState == "game") {
+                    gameState = "pause";
+                } else {
+                    gameState = "game";
+                }
+                break;
+        }
     }
 
     @Override
@@ -82,11 +126,45 @@ public class Jogo extends JPanel implements KeyListener {
         switch (k.getKeyCode()) {
             //UP
             case 38:
-                pac.dir = 'u';
+                switch(gameState){
+                    case "game":
+                        pac.dir = 'u';
+                        break;
+                    case "menu":
+                        switch(menuSelect){
+                            case "play":
+                                menuSelect = "exit";
+                                break;
+                            case "sb":
+                                menuSelect = "play";
+                                break;
+                            case "exit":
+                                menuSelect = "sb";
+                                break;
+                        }
+                        break;
+                }
                 break;
             //DOWN
             case 40:
-                pac.dir = 'd';
+                switch(gameState){
+                    case "game":
+                        pac.dir = 'd';
+                        break;
+                    case "menu":
+                        switch(menuSelect){
+                            case "play":
+                                menuSelect = "sb";
+                                break;
+                            case "sb":
+                                menuSelect = "exit";
+                                break;
+                            case "exit":
+                                menuSelect = "play";
+                                break;
+                        }
+                        break;
+                }
                 break;
             //LEFT
             case 37:
@@ -96,13 +174,23 @@ public class Jogo extends JPanel implements KeyListener {
             case 39:
                 pac.dir = 'r';
                 break;
-            //P (Pausar)
-            case 112:
-                if (gameState == "game")
-                    this.gameState = "pause";
-                else if (gameState == "pause")
-                    this.gameState = "game";
+            case 32:
+                switch(menuSelect){
+                    case "play":
+                        play.action();
+                        break;
+                    case "sb":
+                        sb.action();
+                        break;
+                    case "exit":
+                        exit.action();
+                        break;
+                }
                 break;
+            case 27:
+                if(gameState == "game" || gameState == "pause")
+                    gameState = "menu";
+            break;
         }
     }
 
