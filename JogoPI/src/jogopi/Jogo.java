@@ -24,7 +24,7 @@ public class Jogo extends JPanel implements KeyListener {
     public Jogo() {
         JFrame frame = new JFrame("Pacman");
         frame.add(this);
-        frame.setSize(480, 853);
+        frame.setSize(600, 800);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.addKeyListener(this);
@@ -48,19 +48,19 @@ public class Jogo extends JPanel implements KeyListener {
                 Font fnt = new Font("arial", 1, 90);
                 g.setFont(fnt);
                 g.setColor(Color.ORANGE);
-                g.drawString("PACMAN", 45, 150);
+                g.drawString("PACMAN", 100, 150);
                 switch (menuSelect) {
                     case "play":
                         g2d.setColor(Color.white);
-                        g2d.fillArc(100, 275, 30, 30, 135, 90);
+                        g2d.fillArc(155, 275, 30, 30, 135, 90);
                         break;
                     case "sb":
                         g2d.setColor(Color.white);
-                        g2d.fillArc(100, 365, 30, 30, 135, 90);
+                        g2d.fillArc(155, 365, 30, 30, 135, 90);
                         break;
                     case "exit":
                         g2d.setColor(Color.white);
-                        g2d.fillArc(100, 455, 30, 30, 135, 90);
+                        g2d.fillArc(155, 455, 30, 30, 135, 90);
                         break;
                 }
                 break;

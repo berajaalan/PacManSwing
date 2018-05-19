@@ -17,8 +17,8 @@ public class ScoreBoard implements Botao{
         
         g.setFont(fnt);
         g.setColor(Color.white);
-        g.drawString("Leaderboard", 148, 390);
-        g.drawRect(125, 360, 227, 40);
+        g.drawString("Leaderboard", 203, 390);
+        g.drawRect(180, 360, 227, 40);
 
     }
     
