@@ -2,17 +2,16 @@ package jogopi;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 public class Pacman {
 
-    int x = 0;
-    int y = 0;
-    int xa = 1;
-    int ya = 1;
+    Point pos = new Point(0,0);
+    Point vel = new Point(0,0);
     char dir = 'd';
     int arcDelta = 0, arcSize = 270;
-    Rectangle hurtbox = new Rectangle(x, y, 40, 40);;
+    Rectangle hurtbox = new Rectangle(pos.x, pos.y, 40, 40);;
     boolean fecha = true;
     Jogo jogo;
 
@@ -25,56 +24,56 @@ public class Pacman {
         g.setColor(Color.yellow);
         switch (dir) {
             case 'u':
-                g.fillArc(x, y, 40, 40, 135 - arcDelta, arcSize);
+                g.fillArc(pos.x, pos.y, 40, 40, 135 - arcDelta, arcSize);
                 break;
             case 'd':
-                g.fillArc(x, y, 40, 40, 315 - arcDelta, arcSize);
+                g.fillArc(pos.x, pos.y, 40, 40, 315 - arcDelta, arcSize);
                 break;
             case 'l':
-                g.fillArc(x, y, 40, 40, 225 - arcDelta, arcSize);
+                g.fillArc(pos.x, pos.y, 40, 40, 225 - arcDelta, arcSize);
                 break;
             case 'r':
-                g.fillArc(x, y, 40, 40, 45 - arcDelta, arcSize);
+                g.fillArc(pos.x, pos.y, 40, 40, 45 - arcDelta, arcSize);
                 break;
         }
     }
 
     private void stop() {
-        this.xa = 0;
-        this.ya = 0;
+        this.vel.x = 0;
+        this.vel.y = 0;
     }
 
     private void walk(int x, int y) {
-        this.xa = x;
-        this.ya = y;
+        this.vel.x = x;
+        this.vel.y = y;
     }
 
     public void move() {
 
         switch (dir) {
             case 'u':
-                if (y + ya <= 0) {
+                if (pos.y + vel.y <= 0) {
                     this.stop();
                 } else {
                     this.walk(0, -1);
                 }
                 break;
             case 'd':
-                if (y + ya >= jogo.getHeight() - 40) {
+                if (pos.y + vel.y >= jogo.getHeight() - 40) {
                     this.stop();
                 } else {
                     this.walk(0, 1);
                 }
                 break;
             case 'l':
-                if (x + xa <= 0) {
+                if (pos.x + vel.x <= 0) {
                     this.stop();
                 } else {
                     this.walk(-1, 0);
                 }
                 break;
             case 'r':
-                if (x + xa >= jogo.getWidth() - 40) {
+                if (pos.x + vel.x >= jogo.getWidth() - 40) {
                     this.stop();
                 } else {
                     this.walk(1, 0);
@@ -82,11 +81,11 @@ public class Pacman {
                 break;
         }
         
-        hurtbox.x += xa;
-        hurtbox.y += ya;
+        hurtbox.x += vel.x;
+        hurtbox.y += vel.y;
 
-        x += xa;
-        y += ya;
+        pos.x += vel.x;
+        pos.y += vel.y;
     }
 
     public void mouthMove() {
@@ -108,10 +107,10 @@ public class Pacman {
     private void wallCollisions(){
         for (Rectangle rect : jogo.walls) {
             if (this.hurtbox.intersects(rect)) {
-                this.hurtbox.x -= this.xa;
-                this.hurtbox.y -= this.ya;
-                this.x -= this.xa;
-                this.y -= this.ya;
+                this.hurtbox.x -= this.vel.x;
+                this.hurtbox.y -= this.vel.y;
+                this.pos.x -= this.vel.x;
+                this.pos.y -= this.vel.y;
                 this.stop();
             }
         }
