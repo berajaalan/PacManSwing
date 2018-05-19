@@ -17,8 +17,8 @@ public class Play implements Botao{
         
         g.setFont(fnt);
         g.setColor(Color.white);
-        g.drawString("Play", 360, 300);
-        g.drawRect(275, 270, 227, 40);
+        g.drawString("Play", 210, 300);
+        g.drawRect(125, 270, 227, 40);
     }
     
     @Override

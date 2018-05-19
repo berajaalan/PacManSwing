@@ -17,8 +17,8 @@ public class Exit implements Botao{
         
         g.setFont(fnt);
         g.setColor(Color.white);
-        g.drawString("Exit", 360, 480);
-        g.drawRect(275, 450, 227, 40);
+        g.drawString("Exit", 210, 480);
+        g.drawRect(125, 450, 227, 40);
     }
     
     @Override

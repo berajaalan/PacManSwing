@@ -4,10 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 
@@ -18,15 +19,12 @@ public class Jogo extends JPanel implements KeyListener {
     Play play = new Play(this);
     ScoreBoard sb = new ScoreBoard(this);
     Exit exit = new Exit(this);
-
-    public void move() {
-        pac.move();
-    }
+    ArrayList <Rectangle> walls = new ArrayList<>();
 
     public Jogo() {
         JFrame frame = new JFrame("Pacman");
         frame.add(this);
-        frame.setSize(800, 600);
+        frame.setSize(480, 853);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.addKeyListener(this);
@@ -48,19 +46,19 @@ public class Jogo extends JPanel implements KeyListener {
                 Font fnt = new Font("arial", 1, 90);
                 g.setFont(fnt);
                 g.setColor(Color.ORANGE);
-                g.drawString("PACMAN", 200, 150);
+                g.drawString("PACMAN", 45, 150);
                 switch (menuSelect) {
                     case "play":
                         g2d.setColor(Color.white);
-                        g2d.fillArc(250, 275, 30, 30, 135, 90);
+                        g2d.fillArc(100, 275, 30, 30, 135, 90);
                         break;
                     case "sb":
                         g2d.setColor(Color.white);
-                        g2d.fillArc(250, 365, 30, 30, 135, 90);
+                        g2d.fillArc(100, 365, 30, 30, 135, 90);
                         break;
                     case "exit":
                         g2d.setColor(Color.white);
-                        g2d.fillArc(250, 455, 30, 30, 135, 90);
+                        g2d.fillArc(100, 455, 30, 30, 135, 90);
                         break;
                 }
                 break;
@@ -75,6 +73,10 @@ public class Jogo extends JPanel implements KeyListener {
                 break;
         }
     }
+    
+    public void update() {
+        pac.update();
+    }
 
     public void run() {
 
@@ -88,7 +90,7 @@ public class Jogo extends JPanel implements KeyListener {
                     }
                     break;
                 case "game":
-                    this.move();
+                    this.update();
                     this.repaint();
                     try {
                         Thread.sleep(10);
@@ -102,7 +104,6 @@ public class Jogo extends JPanel implements KeyListener {
                     } catch (InterruptedException ex) {
                     }
                     break;
-
             }
         }
     }
