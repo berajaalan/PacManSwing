@@ -31,6 +31,8 @@ public class Jogo extends JPanel implements KeyListener {
         this.setBackground(Color.black);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
+        walls.add(new Rectangle(100,100,100,100));
+        walls.add(new Rectangle(300,300,100,100));
     }
 
     @Override
@@ -63,6 +65,10 @@ public class Jogo extends JPanel implements KeyListener {
                 }
                 break;
             case "game":
+                for (Rectangle rect : walls) {
+                    g2d.setColor(Color.blue);
+                    g2d.fill(rect);
+                }
                 pac.paint(g2d);
                 break;
             case "pause":

@@ -12,17 +12,17 @@ public class Pacman {
     int ya = 1;
     char dir = 'd';
     int arcDelta = 0, arcSize = 270;
-    Rectangle hurtbox;
+    Rectangle hurtbox = new Rectangle(x, y, 40, 40);;
     boolean fecha = true;
     Jogo jogo;
 
     public Pacman(Jogo jogo) {
         this.jogo = jogo;
+        
     }
 
     public void paint(Graphics2D g) {
         g.setColor(Color.yellow);
-        hurtbox = new Rectangle(x, y, 40, 40);
         switch (dir) {
             case 'u':
                 g.fillArc(x, y, 40, 40, 135 - arcDelta, arcSize);
@@ -81,6 +81,9 @@ public class Pacman {
                 }
                 break;
         }
+        
+        hurtbox.x += xa;
+        hurtbox.y += ya;
 
         x += xa;
         y += ya;
@@ -101,10 +104,24 @@ public class Pacman {
             }
         }
     }
+    
+    private void wallCollisions(){
+        for (Rectangle rect : jogo.walls) {
+            if (this.hurtbox.intersects(rect)) {
+                this.hurtbox.x -= this.xa;
+                this.hurtbox.y -= this.ya;
+                this.x -= this.xa;
+                this.y -= this.ya;
+                this.stop();
+            }
+        }
+    }
 
     public void update() {
 
         this.move();
+        
+        this.wallCollisions();
         
         this.mouthMove();
 
