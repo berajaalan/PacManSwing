@@ -65,17 +65,21 @@ public class Jogo extends JPanel implements KeyListener {
                 }
                 break;
             case "game":
+                pac.paint(g2d);
                 for (Rectangle rect : walls) {
                     g2d.setColor(Color.blue);
                     g2d.fill(rect);
                 }
-                pac.paint(g2d);
                 break;
             case "pause":
                 pac.paint(g2d);
                 g2d.setColor(Color.WHITE);
                 g2d.fillRect(this.getWidth() - 15, 5, 10, 30);
                 g2d.fillRect(this.getWidth() - 30, 5, 10, 30);
+                for (Rectangle rect : walls) {
+                    g2d.setColor(Color.blue);
+                    g2d.fill(rect);
+                }
                 break;
         }
     }
