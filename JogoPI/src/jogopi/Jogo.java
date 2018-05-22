@@ -20,6 +20,7 @@ public class Jogo extends JPanel implements KeyListener {
     ScoreBoard sb = new ScoreBoard(this);
     Exit exit = new Exit(this);
     ArrayList <Rectangle> walls = new ArrayList<>();
+    ArrayList <Pellets> pel = new ArrayList<>();
 
     public Jogo() {
         JFrame frame = new JFrame("Pacman");
@@ -33,6 +34,15 @@ public class Jogo extends JPanel implements KeyListener {
         frame.setLocationRelativeTo(null);
         walls.add(new Rectangle(100,100,100,100));
         walls.add(new Rectangle(300,300,100,100));
+        pel.add(new Pellets(this,100,500));
+        pel.add(new Pellets(this,200,500));
+        pel.add(new Pellets(this,300,500));
+        pel.add(new Pellets(this,100,300));
+
+    }
+    
+    public void removePellets(Pellets p){
+        pel.remove(p);
     }
 
     @Override
@@ -65,14 +75,16 @@ public class Jogo extends JPanel implements KeyListener {
                 }
                 break;
             case "game":
-                pac.paint(g2d);
                 for (Rectangle rect : walls) {
                     g2d.setColor(Color.blue);
                     g2d.fill(rect);
                 }
+                for (Pellets p : pel) {
+                    p.paint(g2d);
+                }
+                pac.paint(g2d);
                 break;
             case "pause":
-                pac.paint(g2d);
                 g2d.setColor(Color.WHITE);
                 g2d.fillRect(this.getWidth() - 15, 5, 10, 30);
                 g2d.fillRect(this.getWidth() - 30, 5, 10, 30);
@@ -80,12 +92,19 @@ public class Jogo extends JPanel implements KeyListener {
                     g2d.setColor(Color.blue);
                     g2d.fill(rect);
                 }
+                for (Pellets p : pel) {
+                    p.paint(g2d);
+                }
+                pac.paint(g2d);
                 break;
         }
     }
     
     public void update() {
         pac.update();
+        for (Pellets p : pel) {
+            p.update();
+        }
     }
 
     public void run() {
