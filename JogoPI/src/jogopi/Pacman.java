@@ -118,16 +118,15 @@ public class Pacman {
     }
 
     private void pelletsCollisions() {
-        ArrayList <Pellets> toRemove = new ArrayList <>();
         for (Pellets p : jogo.pel) {
             double x = (this.pos.x + 20) - (p.pos.x + 5);
             double y = (this.pos.y + 20) - (p.pos.y + 5);
             double dist = Math.sqrt((x * x) + (y * y));
             if (dist <= 15) {
-                toRemove.add(p);
+                jogo.pel.remove(p);
+                break;
             }
         }
-        jogo.pel.removeAll(toRemove);
     }
 
     public void update() {
