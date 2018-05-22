@@ -19,13 +19,4 @@ public class Pellets {
         g.fillOval(pos.x, pos.y, 10, 10);
     }
     
-    public void update(){
-        double x = (this.pos.x+5) - (jogo.pac.pos.x+20);
-        double y = (this.pos.y+5) - (jogo.pac.pos.y+20);
-        double dist = Math.sqrt((x*x)+(y*y));
-        if (dist <= 10) {
-            jogo.removePellets(this);
-        }
-    }
-    
 }

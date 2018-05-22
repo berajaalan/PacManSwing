@@ -4,20 +4,21 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 public class Pacman {
 
-    Point pos = new Point(0,0);
-    Point vel = new Point(0,0);
+    Point pos = new Point(0, 0);
+    Point vel = new Point(0, 0);
     char dir = 'd';
     int arcDelta = 0, arcSize = 270;
-    Rectangle hurtbox = new Rectangle(pos.x, pos.y, 40, 40);;
+    Rectangle hurtbox = new Rectangle(pos.x, pos.y, 40, 40);
     boolean fecha = true;
     Jogo jogo;
 
     public Pacman(Jogo jogo) {
         this.jogo = jogo;
-        
+
     }
 
     public void paint(Graphics2D g) {
@@ -80,7 +81,7 @@ public class Pacman {
                 }
                 break;
         }
-        
+
         hurtbox.x += vel.x;
         hurtbox.y += vel.y;
 
@@ -95,7 +96,7 @@ public class Pacman {
             if (arcSize >= 360) {
                 fecha = false;
             }
-        }else{
+        } else {
             arcDelta -= 2;
             arcSize -= 4;
             if (arcSize <= 270) {
@@ -103,8 +104,8 @@ public class Pacman {
             }
         }
     }
-    
-    private void wallCollisions(){
+
+    private void wallCollisions() {
         for (Rectangle rect : jogo.walls) {
             if (this.hurtbox.intersects(rect)) {
                 this.hurtbox.x -= this.vel.x;
@@ -116,12 +117,27 @@ public class Pacman {
         }
     }
 
+    private void pelletsCollisions() {
+        ArrayList <Pellets> toRemove = new ArrayList <>();
+        for (Pellets p : jogo.pel) {
+            double x = (this.pos.x + 20) - (p.pos.x + 5);
+            double y = (this.pos.y + 20) - (p.pos.y + 5);
+            double dist = Math.sqrt((x * x) + (y * y));
+            if (dist <= 15) {
+                toRemove.add(p);
+            }
+        }
+        jogo.pel.removeAll(toRemove);
+    }
+
     public void update() {
 
         this.move();
-        
+
         this.wallCollisions();
-        
+
+        this.pelletsCollisions();
+
         this.mouthMove();
 
     }

@@ -40,10 +40,6 @@ public class Jogo extends JPanel implements KeyListener {
         pel.add(new Pellets(this,100,300));
 
     }
-    
-    public void removePellets(Pellets p){
-        pel.remove(p);
-    }
 
     @Override
     public void paint(Graphics g) {
@@ -102,9 +98,6 @@ public class Jogo extends JPanel implements KeyListener {
     
     public void update() {
         pac.update();
-        for (Pellets p : pel) {
-            p.update();
-        }
     }
 
     public void run() {
