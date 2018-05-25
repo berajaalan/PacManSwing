@@ -118,7 +118,7 @@ public class Pacman {
             double x = (this.pos.x + 11) - (p.pos.x + 5);
             double y = (this.pos.y + 11) - (p.pos.y + 5);
             double dist = Math.sqrt((x * x) + (y * y));
-            if (dist <= 15) {
+            if (dist <= 5) {
                 jogo.pel.remove(p);
                 break;
             }

@@ -21,8 +21,8 @@ public class Jogo extends JPanel implements KeyListener {
     ScoreBoard sb = new ScoreBoard(this);
     Exit exit = new Exit(this);
     Level lvl;
-    ArrayList <Rectangle> walls = new ArrayList<>();
-    ArrayList <Pellets> pel = new ArrayList<>();
+    ArrayList<Rectangle> walls = new ArrayList<>();
+    ArrayList<Pellets> pel = new ArrayList<>();
 
     public Jogo() throws IOException {
         JFrame frame = new JFrame("Pacman");
@@ -68,9 +68,18 @@ public class Jogo extends JPanel implements KeyListener {
                 break;
             case "game":
                 for (Rectangle rect : walls) {
-                    g2d.setColor(Color.blue);
-                    g2d.fill(rect);
+                    if (rect.y == 264) {
+                        if (rect.x != 286 && rect.x != 308) {
+                            g2d.setColor(Color.blue);
+                            g2d.fill(rect);
+                        }
+                    } else {
+                        g2d.setColor(Color.blue);
+                        g2d.fill(rect);
+                    }
                 }
+                g2d.setColor(Color.white);
+                g2d.fillRect(286, 269, 44, 11);
                 for (Pellets p : pel) {
                     p.paint(g2d);
                 }
@@ -91,7 +100,7 @@ public class Jogo extends JPanel implements KeyListener {
                 break;
         }
     }
-    
+
     public void update() {
         pac.update();
     }
@@ -145,12 +154,12 @@ public class Jogo extends JPanel implements KeyListener {
         switch (k.getKeyCode()) {
             //UP
             case 38:
-                switch(gameState){
+                switch (gameState) {
                     case "game":
                         pac.dir = 'u';
                         break;
                     case "menu":
-                        switch(menuSelect){
+                        switch (menuSelect) {
                             case "play":
                                 menuSelect = "exit";
                                 break;
@@ -166,12 +175,12 @@ public class Jogo extends JPanel implements KeyListener {
                 break;
             //DOWN
             case 40:
-                switch(gameState){
+                switch (gameState) {
                     case "game":
                         pac.dir = 'd';
                         break;
                     case "menu":
-                        switch(menuSelect){
+                        switch (menuSelect) {
                             case "play":
                                 menuSelect = "sb";
                                 break;
@@ -194,7 +203,7 @@ public class Jogo extends JPanel implements KeyListener {
                 pac.dir = 'r';
                 break;
             case 32:
-                switch(menuSelect){
+                switch (menuSelect) {
                     case "play":
                         play.action();
                         break;
@@ -207,9 +216,10 @@ public class Jogo extends JPanel implements KeyListener {
                 }
                 break;
             case 27:
-                if(gameState == "game" || gameState == "pause")
+                if (gameState == "game" || gameState == "pause") {
                     gameState = "menu";
-            break;
+                }
+                break;
         }
     }
 
