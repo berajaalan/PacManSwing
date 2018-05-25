@@ -8,11 +8,11 @@ import java.util.ArrayList;
 
 public class Pacman {
 
-    Point pos = new Point(0, 0);
+    Point pos = new Point(297, 374);
     Point vel = new Point(0, 0);
-    char dir = 'd';
+    char dir = 'l';
     int arcDelta = 0, arcSize = 270;
-    Rectangle hurtbox = new Rectangle(pos.x, pos.y, 40, 40);
+    Rectangle hurtbox = new Rectangle(pos.x, pos.y, 22, 22);
     boolean fecha = true;
     Jogo jogo;
 
@@ -25,18 +25,20 @@ public class Pacman {
         g.setColor(Color.yellow);
         switch (dir) {
             case 'u':
-                g.fillArc(pos.x, pos.y, 40, 40, 135 - arcDelta, arcSize);
+                g.fillArc(pos.x, pos.y, 22, 22, 135 - arcDelta, arcSize);
                 break;
             case 'd':
-                g.fillArc(pos.x, pos.y, 40, 40, 315 - arcDelta, arcSize);
+                g.fillArc(pos.x, pos.y, 22, 22, 315 - arcDelta, arcSize);
                 break;
             case 'l':
-                g.fillArc(pos.x, pos.y, 40, 40, 225 - arcDelta, arcSize);
+                g.fillArc(pos.x, pos.y, 22, 22, 225 - arcDelta, arcSize);
                 break;
             case 'r':
-                g.fillArc(pos.x, pos.y, 40, 40, 45 - arcDelta, arcSize);
+                g.fillArc(pos.x, pos.y, 22, 22, 45 - arcDelta, arcSize);
                 break;
         }
+        g.setColor(Color.gray);
+        g.draw(hurtbox);
     }
 
     private void stop() {
@@ -53,29 +55,23 @@ public class Pacman {
 
         switch (dir) {
             case 'u':
-                if (pos.y + vel.y <= 0) {
-                    this.stop();
-                } else {
-                    this.walk(0, -1);
-                }
+                this.walk(0,-1);
                 break;
             case 'd':
-                if (pos.y + vel.y >= jogo.getHeight() - 40) {
-                    this.stop();
-                } else {
-                    this.walk(0, 1);
-                }
+                this.walk(0, 1);
                 break;
             case 'l':
-                if (pos.x + vel.x <= 0) {
-                    this.stop();
+                if (pos.x <= -22) {
+                    pos.x = jogo.getWidth();
+                    hurtbox.x = jogo.getWidth();
                 } else {
                     this.walk(-1, 0);
                 }
                 break;
             case 'r':
-                if (pos.x + vel.x >= jogo.getWidth() - 40) {
-                    this.stop();
+                if (pos.x + vel.x >= jogo.getWidth()) {
+                    pos.x = -22;
+                    hurtbox.x = -22;
                 } else {
                     this.walk(1, 0);
                 }
@@ -119,8 +115,8 @@ public class Pacman {
 
     private void pelletsCollisions() {
         for (Pellets p : jogo.pel) {
-            double x = (this.pos.x + 20) - (p.pos.x + 5);
-            double y = (this.pos.y + 20) - (p.pos.y + 5);
+            double x = (this.pos.x + 11) - (p.pos.x + 5);
+            double y = (this.pos.y + 11) - (p.pos.y + 5);
             double dist = Math.sqrt((x * x) + (y * y));
             if (dist <= 15) {
                 jogo.pel.remove(p);

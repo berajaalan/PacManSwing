@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
@@ -19,26 +20,21 @@ public class Jogo extends JPanel implements KeyListener {
     Play play = new Play(this);
     ScoreBoard sb = new ScoreBoard(this);
     Exit exit = new Exit(this);
+    Level lvl;
     ArrayList <Rectangle> walls = new ArrayList<>();
     ArrayList <Pellets> pel = new ArrayList<>();
 
-    public Jogo() {
+    public Jogo() throws IOException {
         JFrame frame = new JFrame("Pacman");
         frame.add(this);
-        frame.setSize(600, 800);
+        frame.setSize(616, 704);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.addKeyListener(this);
         this.setBackground(Color.black);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
-        walls.add(new Rectangle(100,100,100,100));
-        walls.add(new Rectangle(300,300,100,100));
-        pel.add(new Pellets(this,100,500));
-        pel.add(new Pellets(this,200,500));
-        pel.add(new Pellets(this,300,500));
-        pel.add(new Pellets(this,100,300));
-
+        this.lvl = new Level(this);
     }
 
     @Override

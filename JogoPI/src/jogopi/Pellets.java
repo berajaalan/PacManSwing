@@ -16,7 +16,7 @@ public class Pellets {
     
     public void paint(Graphics2D g){
         g.setColor(Color.white);
-        g.fillOval(pos.x, pos.y, 10, 10);
+        g.fillOval(pos.x, pos.y, 6, 6);
     }
     
 }
