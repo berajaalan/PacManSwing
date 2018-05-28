@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/I:/GitHub/PacManSwing/JogoPI/src/jogopi/Jogo.java</file>
-            <file>file:/I:/GitHub/PacManSwing/JogoPI/src/jogopi/Pacman.java</file>
-            <file>file:/I:/GitHub/PacManSwing/JogoPI/src/jogopi/Exit.java</file>
-            <file>file:/I:/GitHub/PacManSwing/JogoPI/src/jogopi/Play.java</file>
-            <file>file:/I:/GitHub/PacManSwing/JogoPI/src/jogopi/ScoreBoard.java</file>
+            <file>file:/I:/GitHub/PacManSwing/JogoPI/src/pacman/Rosa.java</file>
+            <file>file:/I:/GitHub/PacManSwing/JogoPI/src/pacman/Fantasma.java</file>
+            <file>file:/I:/GitHub/PacManSwing/JogoPI/src/pacman/Jogo.java</file>
+            <file>file:/I:/GitHub/PacManSwing/JogoPI/src/pacman/Level.java</file>
+            <file>file:/I:/GitHub/PacManSwing/JogoPI/src/pacman/Pellets.java</file>
+            <file>file:/I:/GitHub/PacManSwing/JogoPI/src/pacman/Pacman.java</file>
         </group>
     </open-files>
 </project-private>
