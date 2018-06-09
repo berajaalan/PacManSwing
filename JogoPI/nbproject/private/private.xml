@@ -2,6 +2,17 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group/>
+=======
+        <group>
+            <file>file:/I:/GitHub/PacManSwing/JogoPI/src/pacman/Rosa.java</file>
+            <file>file:/I:/GitHub/PacManSwing/JogoPI/src/pacman/Fantasma.java</file>
+            <file>file:/I:/GitHub/PacManSwing/JogoPI/src/pacman/Jogo.java</file>
+            <file>file:/I:/GitHub/PacManSwing/JogoPI/src/pacman/Level.java</file>
+            <file>file:/I:/GitHub/PacManSwing/JogoPI/src/pacman/Pellets.java</file>
+            <file>file:/I:/GitHub/PacManSwing/JogoPI/src/pacman/Pacman.java</file>
+        </group>
+>>>>>>> f7d782903eceef9533c96da9a8d71787bf70a09d
     </open-files>
 </project-private>
