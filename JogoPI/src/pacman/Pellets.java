@@ -1,4 +1,4 @@
-package jogopi;
+package pacman;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
