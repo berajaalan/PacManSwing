@@ -1,29 +1,25 @@
-package pacman;
+package jogopi;
 
 import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Level {
 
     Jogo jogo;
-    String path = "\\txt\\";
-    private String arq;
-    String full_path;
+    String arq_lvl_1 = "\\txt\\map1.txt";
     BufferedReader br;
     
-    public Level(Jogo jogo, String arq) throws FileNotFoundException, IOException {
+    public Level(Jogo jogo) throws FileNotFoundException, IOException {
         this.jogo = jogo;
-        this.arq = arq;
-        this.full_path = System.getProperty("user.dir")+this.path+this.arq;
-        this.br = new BufferedReader(new FileReader(full_path));
-        this.lvl();
+        String l = System.getProperty("user.dir")+arq_lvl_1;
+        this.br = new BufferedReader(new FileReader(l));
+        this.lvl_1();
     }
     
-    public void lvl() throws IOException{
+    public void lvl_1() throws IOException{
         int x = 0, y = 0;
         for (int i = 0; i < 31; i++) {
             String line[] = br.readLine().split(" ");
@@ -48,23 +44,6 @@ public class Level {
             y += 22;
             System.out.println("");
         }
-        System.out.println("--------------------------------------------------------");
     }
-
-    public void setArq(String arq) throws FileNotFoundException, IOException {
-        this.arq = arq;
-        this.full_path = System.getProperty("user.dir")+this.path+this.arq;
-        jogo.pac.pos.x = 297;
-        jogo.pac.pos.y = 374;
-        jogo.pac.hurtbox.x = 297;
-        jogo.pac.hurtbox.y = 374;
-        br = new BufferedReader(new FileReader(full_path));
-        ArrayList <Rectangle> w = jogo.walls;
-        ArrayList <Pellets> p = jogo.pel;
-        jogo.walls.removeAll(w);
-        jogo.pel.removeAll(p);
-        this.lvl();
-    }
-    
     
 }
