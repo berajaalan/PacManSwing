@@ -1,7 +1,6 @@
 package jogopi;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -11,7 +10,7 @@ public class Pacman {
 
     Point pos = new Point(297, 374);
     Point vel = new Point(0, 0);
-    char dir = 'l', proxDir;
+    char dir = 'l';
     int arcDelta = 0, arcSize = 270;
     Rectangle hurtbox = new Rectangle(pos.x, pos.y, 22, 22);
     boolean fecha = true;
@@ -24,8 +23,7 @@ public class Pacman {
 
     public void paint(Graphics2D g) {
         g.setColor(Color.yellow);
-        
-        switch (proxDir) {
+        switch (dir) {
             case 'u':
                 g.fillArc(pos.x, pos.y, 22, 22, 135 - arcDelta, arcSize);
                 break;
@@ -39,15 +37,8 @@ public class Pacman {
                 g.fillArc(pos.x, pos.y, 22, 22, 45 - arcDelta, arcSize);
                 break;
         }
-//        g.setColor(Color.gray);
-//        g.draw(hurtbox);
-
-        Font fnt = new Font("arial", 1, 15);
-        g.setFont(fnt);
-        g.setColor(Color.white);
-        g.drawString("dir: " + dir, 200, 700);
-        g.drawString("prox: " + proxDir, 200, 715);
-
+        g.setColor(Color.gray);
+        g.draw(hurtbox);
     }
 
     private void stop() {
@@ -61,25 +52,37 @@ public class Pacman {
     }
 
     public void move() {
+
         switch (dir) {
             case 'u':
-                this.walk(0, -1);
-                this.proxDir = this.dir;
+                this.walk(0,-1);
                 break;
             case 'd':
                 this.walk(0, 1);
-                this.proxDir = this.dir;
                 break;
             case 'l':
-                this.walk(-1, 0);
-                this.proxDir = this.dir;
+                if (pos.x <= -22) {
+                    pos.x = jogo.getWidth();
+                    hurtbox.x = jogo.getWidth();
+                } else {
+                    this.walk(-1, 0);
+                }
                 break;
             case 'r':
-                this.walk(1, 0);
-                this.proxDir = this.dir;
+                if (pos.x + vel.x >= jogo.getWidth()) {
+                    pos.x = -22;
+                    hurtbox.x = -22;
+                } else {
+                    this.walk(1, 0);
+                }
                 break;
         }
 
+        hurtbox.x += vel.x;
+        hurtbox.y += vel.y;
+
+        pos.x += vel.x;
+        pos.y += vel.y;
     }
 
     public void mouthMove() {
@@ -122,56 +125,9 @@ public class Pacman {
         }
     }
 
-    private boolean changeDir() {
-
-        for (Rectangle rect : jogo.walls) {
-            switch (dir) {
-                case 'u':
-                    if (rect.intersects(new Rectangle(pos.x, pos.y - 1, 22, 22))) {
-                        return false;
-                    }
-                    break;
-                case 'd':
-                    if (rect.intersects(new Rectangle(pos.x, pos.y + 1, 22, 22))) {
-                        return false;
-                    }
-                    break;
-                case 'l':
-                    if (rect.intersects(new Rectangle(pos.x - 1, pos.y, 22, 22))) {
-                        return false;
-                    }
-                    break;
-                case 'r':
-                    if (rect.intersects(new Rectangle(pos.x + 1, pos.y, 22, 22))) {
-                        return false;
-                    }
-                    break;
-            }
-        }
-        return true;
-    }
-
     public void update() {
 
-        if (this.changeDir()) {
-            this.move();
-        }
-
-        if (pos.x <= -22) {
-            pos.x = jogo.getWidth();
-            hurtbox.x = jogo.getWidth();
-        }
-
-        else if (pos.x >= jogo.getWidth()) {
-            pos.x = -22;
-            hurtbox.x = -22;
-        }
-
-        hurtbox.x += vel.x;
-        hurtbox.y += vel.y;
-
-        pos.x += vel.x;
-        pos.y += vel.y;
+        this.move();
 
         this.wallCollisions();
 

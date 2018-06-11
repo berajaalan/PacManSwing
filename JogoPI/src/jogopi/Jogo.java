@@ -20,7 +20,6 @@ public class Jogo extends JPanel implements KeyListener {
     Play play = new Play(this);
     ScoreBoard sb = new ScoreBoard(this);
     Exit exit = new Exit(this);
-    HUD hud = new HUD(this);
     Level lvl;
     ArrayList<Rectangle> walls = new ArrayList<>();
     ArrayList<Pellets> pel = new ArrayList<>();
@@ -28,8 +27,7 @@ public class Jogo extends JPanel implements KeyListener {
     public Jogo() throws IOException {
         JFrame frame = new JFrame("Pacman");
         frame.add(this);
-        frame.setSize(616, 754);
-        this.requestFocus();
+        frame.setSize(616, 704);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.addKeyListener(this);
@@ -69,8 +67,6 @@ public class Jogo extends JPanel implements KeyListener {
                 }
                 break;
             case "game":
-                g2d.setColor(Color.yellow);
-                g2d.fillOval(600, 740, 22, 22);
                 for (Rectangle rect : walls) {
                     if (rect.y == 264) {
                         if (rect.x != 286 && rect.x != 308) {
@@ -88,12 +84,11 @@ public class Jogo extends JPanel implements KeyListener {
                     p.paint(g2d);
                 }
                 pac.paint(g2d);
-                hud.paint(g2d);
                 break;
             case "pause":
-//                g2d.setColor(Color.WHITE);
-//                g2d.fillRect(this.getWidth() - 15, 5, 10, 30);
-//                g2d.fillRect(this.getWidth() - 30, 5, 10, 30);
+                g2d.setColor(Color.WHITE);
+                g2d.fillRect(this.getWidth() - 15, 5, 10, 30);
+                g2d.fillRect(this.getWidth() - 30, 5, 10, 30);
                 for (Rectangle rect : walls) {
                     g2d.setColor(Color.blue);
                     g2d.fill(rect);
