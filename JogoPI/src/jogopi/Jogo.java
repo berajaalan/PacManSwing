@@ -3,33 +3,38 @@ package jogopi;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.Ellipse2D;
+import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 
 public class Jogo extends JPanel implements KeyListener {
 
     Pacman pac = new Pacman(this);
-    private String gameState = "game";
-    Timer timer = new Timer(1000, );
+    String gameState = "game", menuSelect = "play";
+    Level lvl;
+    Fantasma red;
+    ArrayList<Rectangle> walls = new ArrayList<>();
+    ArrayList<Pellets> pel = new ArrayList<>();
+    PathFinder pf;
 
-    public void move() {
-        pac.move();
-    }
-
-    public Jogo() {
+    public Jogo() throws IOException {
         JFrame frame = new JFrame("Pacman");
         frame.add(this);
-        frame.setSize(800, 600);
+        frame.setSize(616, 704);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.addKeyListener(this);
         this.setBackground(Color.black);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
+        this.lvl = new Level(this);
+        red = new Fantasma(this, "images\\Red");
+        pf = new PathFinder(this);
     }
 
     @Override
@@ -37,39 +42,44 @@ public class Jogo extends JPanel implements KeyListener {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        pac.paint(g2d);
-        if (gameState == "pause") {
-            g2d.setColor(Color.WHITE);
-            g2d.fillRect(this.getWidth() - 15, 5, 10, 30);
+
+        for (Rectangle rect : walls) {
+            if (rect.y == 264) {
+                if (rect.x != 286 && rect.x != 308) {
+                    g2d.setColor(Color.blue);
+                    g2d.fill(rect);
+                }
+            } else {
+                g2d.setColor(Color.blue);
+                g2d.fill(rect);
+            }
         }
-//        g2d.setColor(Color.RED);
-//        g2d.fillOval(0, 0, 30, 30);
-//        g2d.drawOval(0, 50, 30, 30);
-//        g2d.fillRect(50, 0, 30, 30);
-//        g2d.drawRect(50, 50, 30, 30);
-//        g2d.draw(new Ellipse2D.Double(0, 100, 30, 30));
+        
+        g2d.setColor(Color.white);
+        g2d.fillRect(286, 269, 44, 11);
+        
+        for (Pellets p : pel) {
+            p.paint(g2d);
+        }
+        
+        red.paint(g2d);
+        pac.paint(g2d);
+    }
+
+    public void update() {
+        pac.update();
     }
 
     public void run() {
+
         while (true) {
-            switch(gameState){
-                case "game":
-                    this.move();
-                    this.repaint();
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException ex) {
-                    }
-                    break;
-                case "pause":
-                    this.repaint();
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException ex) {
-                    }
-                    break;
-                
+            this.repaint();
+            this.update();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ex) {
             }
+
         }
     }
 
@@ -82,26 +92,19 @@ public class Jogo extends JPanel implements KeyListener {
         switch (k.getKeyCode()) {
             //UP
             case 38:
-                pac.dir = 'u';
+                pac.dir = "u";
                 break;
             //DOWN
             case 40:
-                pac.dir = 'd';
+                pac.dir = "d";
                 break;
             //LEFT
             case 37:
-                pac.dir = 'l';
+                pac.dir = "l";
                 break;
             //RIGHT
             case 39:
-                pac.dir = 'r';
-                break;
-            //P (Pausar)
-            case 112:
-                if (gameState == "game")
-                    this.gameState = "pause";
-                else if (gameState == "pause")
-                    this.gameState = "game";
+                pac.dir = "r";
                 break;
         }
     }
