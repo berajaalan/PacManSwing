@@ -4,13 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 
 public class Pacman {
 
-    Point pos = new Point(297, 374);
-    Point vel = new Point(0, 0);
-    char dir = 'l';
+    Point pos = new Point(297, 506);
+    Point vel = new Point(0, -1);
+    String dir = "l", proxDir;
     int arcDelta = 0, arcSize = 270;
     Rectangle hurtbox = new Rectangle(pos.x, pos.y, 22, 22);
     boolean fecha = true;
@@ -23,66 +22,44 @@ public class Pacman {
 
     public void paint(Graphics2D g) {
         g.setColor(Color.yellow);
-        switch (dir) {
-            case 'u':
+        switch (proxDir) {
+            case "u":
                 g.fillArc(pos.x, pos.y, 22, 22, 135 - arcDelta, arcSize);
                 break;
-            case 'd':
+            case "d":
                 g.fillArc(pos.x, pos.y, 22, 22, 315 - arcDelta, arcSize);
                 break;
-            case 'l':
+            case "l":
                 g.fillArc(pos.x, pos.y, 22, 22, 225 - arcDelta, arcSize);
                 break;
-            case 'r':
+            case "r":
                 g.fillArc(pos.x, pos.y, 22, 22, 45 - arcDelta, arcSize);
                 break;
         }
-        g.setColor(Color.gray);
-        g.draw(hurtbox);
-    }
-
-    private void stop() {
-        this.vel.x = 0;
-        this.vel.y = 0;
-    }
-
-    private void walk(int x, int y) {
-        this.vel.x = x;
-        this.vel.y = y;
+//        g.setColor(Color.gray);
+//        g.draw(hurtbox);
     }
 
     public void move() {
-
         switch (dir) {
-            case 'u':
-                this.walk(0,-1);
+            case "u":
+                vel.setLocation(0, -1);
+                this.proxDir = this.dir;
                 break;
-            case 'd':
-                this.walk(0, 1);
+            case "d":
+                vel.setLocation(0, 1);
+                this.proxDir = this.dir;
                 break;
-            case 'l':
-                if (pos.x <= -22) {
-                    pos.x = jogo.getWidth();
-                    hurtbox.x = jogo.getWidth();
-                } else {
-                    this.walk(-1, 0);
-                }
+            case "l":
+                vel.setLocation(-1, 0);
+                this.proxDir = this.dir;
                 break;
-            case 'r':
-                if (pos.x + vel.x >= jogo.getWidth()) {
-                    pos.x = -22;
-                    hurtbox.x = -22;
-                } else {
-                    this.walk(1, 0);
-                }
+            case "r":
+                vel.setLocation(1, 0);
+                this.proxDir = this.dir;
                 break;
         }
 
-        hurtbox.x += vel.x;
-        hurtbox.y += vel.y;
-
-        pos.x += vel.x;
-        pos.y += vel.y;
     }
 
     public void mouthMove() {
@@ -108,7 +85,6 @@ public class Pacman {
                 this.hurtbox.y -= this.vel.y;
                 this.pos.x -= this.vel.x;
                 this.pos.y -= this.vel.y;
-                this.stop();
             }
         }
     }
@@ -125,14 +101,61 @@ public class Pacman {
         }
     }
 
+    private boolean changeDir() {
+
+        for (Rectangle rect : jogo.walls) {
+            switch (dir) {
+                case "u":
+                    if (rect.intersects(new Rectangle(pos.x, pos.y - 1, 22, 22))) {
+                        return false;
+                    }
+                    break;
+                case "d":
+                    if (rect.intersects(new Rectangle(pos.x, pos.y + 1, 22, 22))) {
+                        return false;
+                    }
+                    break;
+                case "l":
+                    if (rect.intersects(new Rectangle(pos.x - 1, pos.y, 22, 22))) {
+                        return false;
+                    }
+                    break;
+                case "r":
+                    if (rect.intersects(new Rectangle(pos.x + 1, pos.y, 22, 22))) {
+                        return false;
+                    }
+                    break;
+            }
+        }
+        return true;
+    }
+
     public void update() {
 
-        this.move();
+        if (this.changeDir()) {
+            this.move();
+        }
+
+        if (pos.x <= -22) {
+            pos.x = jogo.getWidth();
+            hurtbox.x = jogo.getWidth();
+        }
+
+        else if (pos.x >= jogo.getWidth()) {
+            pos.x = -22;
+            hurtbox.x = -22;
+        }
+
+        hurtbox.x += vel.x;
+        hurtbox.y += vel.y;
+
+        pos.x += vel.x;
+        pos.y += vel.y;
 
         this.wallCollisions();
-
+        
         this.pelletsCollisions();
-
+        
         this.mouthMove();
 
     }

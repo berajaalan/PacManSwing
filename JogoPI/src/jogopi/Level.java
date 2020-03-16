@@ -9,13 +9,12 @@ import java.io.IOException;
 public class Level {
 
     Jogo jogo;
-    String arq_lvl_1 = "\\txt\\map1.txt";
+    String arq_lvl_1 = "txt\\map1.txt";
     BufferedReader br;
     
     public Level(Jogo jogo) throws FileNotFoundException, IOException {
         this.jogo = jogo;
-        String l = System.getProperty("user.dir")+arq_lvl_1;
-        this.br = new BufferedReader(new FileReader(l));
+        this.br = new BufferedReader(new FileReader(arq_lvl_1));
         this.lvl_1();
     }
     
@@ -24,7 +23,6 @@ public class Level {
         for (int i = 0; i < 31; i++) {
             String line[] = br.readLine().split(" ");
             for (int j = 0; j < line.length; j++) {
-                System.out.print(line[j] + " ");
                 int h = Integer.parseInt(line[j]);
                 switch (h){
                     case 0:
@@ -42,7 +40,6 @@ public class Level {
             }
             x = 0;
             y += 22;
-            System.out.println("");
         }
     }
     
